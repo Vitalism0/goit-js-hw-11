@@ -21,7 +21,7 @@ function handleSubmit(e) {
   const query = e.target.elements['search-text'].value.trim();
   if (!query) {
     iziToast.show({
-      message: 'Please type something in search!',
+      message: 'Please enter a search term.',
       position: 'topRight',
       backgroundColor: '#EF4040',
       messageColor: '#FAFAFB',
@@ -47,7 +47,7 @@ function handleSubmit(e) {
     })
     .catch(err => {
       iziToast.show({
-        message: err.message || 'Something goes wrong',
+        message: err.message || 'Something went wrong. Please try again.',
         position: 'topRight',
         backgroundColor: '#EF4040',
         messageColor: '#FAFAFB',
