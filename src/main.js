@@ -18,13 +18,22 @@ form.addEventListener('submit', handleSubmit);
 function handleSubmit(e) {
   e.preventDefault();
 
+  const query = e.target.elements['search-text'].value.trim();
+  if (!query) {
+    iziToast.show({
+      message: 'Please type something in search!',
+      position: 'topRight',
+      backgroundColor: '#EF4040',
+      messageColor: '#FAFAFB',
+    });
+    return;
+  }
+
   showLoader();
   clearGallery();
 
-  const query = e.target.elements['search-text'].value.trim();
   getImagesByQuery(query)
     .then(data => {
-      createGallery(data.hits);
       if (data.hits.length === 0) {
         return iziToast.show({
           message:
@@ -34,8 +43,16 @@ function handleSubmit(e) {
           messageColor: '#FAFAFB',
         });
       }
+      createGallery(data.hits);
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      iziToast.show({
+        message: err.message || 'Something goes wrong',
+        position: 'topRight',
+        backgroundColor: '#EF4040',
+        messageColor: '#FAFAFB',
+      });
+    })
     .finally(() => {
       hideLoader();
       form.reset();
