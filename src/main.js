@@ -20,12 +20,8 @@ function handleSubmit(e) {
 
   const query = e.target.elements['search-text'].value.trim();
   if (!query) {
-    iziToast.show({
-      message: 'Please enter a search term.',
-      position: 'topRight',
-      backgroundColor: '#EF4040',
-      messageColor: '#FAFAFB',
-    });
+    iziToastMessage('Please enter a search term.');
+
     return;
   }
 
@@ -35,26 +31,25 @@ function handleSubmit(e) {
   getImagesByQuery(query)
     .then(data => {
       if (data.hits.length === 0) {
-        return iziToast.show({
-          message:
-            'Sorry, there are no images matching your search query. Please try again!',
-          position: 'topRight',
-          backgroundColor: '#EF4040',
-          messageColor: '#FAFAFB',
-        });
+        return iziToastMessage(
+          'Sorry, there are no images matching your search query. Please try again!'
+        );
       }
       createGallery(data.hits);
     })
     .catch(err => {
-      iziToast.show({
-        message: err.message || 'Something went wrong. Please try again.',
-        position: 'topRight',
-        backgroundColor: '#EF4040',
-        messageColor: '#FAFAFB',
-      });
+      iziToastMessage(err.message || 'Something went wrong. Please try again.');
     })
     .finally(() => {
       hideLoader();
       form.reset();
     });
+}
+function iziToastMessage(title) {
+  return iziToast.show({
+    message: title,
+    position: 'topRight',
+    backgroundColor: '#EF4040',
+    messageColor: '#FAFAFB',
+  });
 }
